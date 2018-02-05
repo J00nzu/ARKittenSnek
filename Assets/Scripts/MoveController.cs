@@ -32,9 +32,9 @@ public class MoveController : MonoBehaviour {
 			}
 			targetX += (int)tempDir.x;
 			targetY += (int)tempDir.y;
-			if (targetX < 0 || targetX > 9 || targetY < 0 || targetY > 9) {
-				targetX = (int)Mathf.Clamp(targetX, 0, 9);
-				targetY = (int)Mathf.Clamp(targetY, 0, 9);
+			if (targetX < 0 || targetX > grid.getGridSize()-1 || targetY < 0 || targetY > grid.getGridSize()-1) {
+				targetX = (int)Mathf.Clamp(targetX, 0, grid.getGridSize()-1);
+				targetY = (int)Mathf.Clamp(targetY, 0, grid.getGridSize()-1);
 
 				yield return null;
 				continue;
@@ -80,8 +80,9 @@ public class MoveController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider coll) {
 		if (coll.gameObject.tag == "Food") {
-			Destroy (coll.gameObject);
-			//canAdd = true;
+			var food = coll.GetComponent<FoodScript>();
+			food.RePosition();
+			Prosper();
 		}
 	}
 
