@@ -1905,6 +1905,10 @@ MonoBehaviour:
   speed: 0.3
   catPrefab: {fileID: 1254810790543370, guid: ec8c88ae586a2d14ea24e19df25276c9, type: 2}
   disabledDir: {x: 0, y: 0}
+  upBut: {fileID: 0}
+  downBut: {fileID: 0}
+  rightBut: {fileID: 0}
+  leftBut: {fileID: 0}
 --- !u!137 &137045798732116938
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
