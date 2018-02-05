@@ -21,5 +21,6 @@ public class FoodScript : MonoBehaviour {
 		int x = Random.Range(0, grid.getGridSize());
 		int y = Random.Range(0, grid.getGridSize());
 		Vector3 pos = grid.getTarget(x, y);
+		transform.position = pos;
 	}
 }

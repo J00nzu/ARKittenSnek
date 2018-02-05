@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class MoveController : MonoBehaviour {
 
+	ChildMove child;
+
 	Vector2 tempDir = new Vector2(0, 1);
+	Vector2 lastDir;
 
 	Vector3 targetPosition;
+	Vector3 lastTarget;
 	int targetX = 0, targetY = 0;
 	GridScript grid;
 
@@ -39,9 +43,14 @@ public class MoveController : MonoBehaviour {
 				yield return null;
 				continue;
 			}
+			if (child != null) {
+				child.nextTarget(lastTarget, lastDir);
+			}
 			DoTurn(tempDir);
+			lastTarget = targetPosition;
 			targetPosition = grid.getTarget(targetX, targetY);
 			disabledDir = -tempDir;
+			lastDir = tempDir;
 		}
 	}
 	
@@ -74,8 +83,21 @@ public class MoveController : MonoBehaviour {
 		transform.LookAt(transform.position+turn3);
 	}
 
+	public void Die () {
+		targetPosition = new Vector3(0, 1000, 0);
+	}
+
 	void Prosper() {
-		
+		if (child != null) {
+			child.SpawnFollower(catPrefab, grid.getCellLength());
+		} else { 
+			GameObject c = Instantiate(catPrefab, transform.parent);
+			Vector3 disDir3D = new Vector3(disabledDir.x, 0, disabledDir.y);
+			c.transform.position = transform.position + (disDir3D * grid.getCellLength());
+			child = c.GetComponent<ChildMove>();
+			child.nextTarget(lastTarget, lastDir);
+			child.speed = speed;
+		}
 	}
 
 	void OnTriggerEnter(Collider coll) {
