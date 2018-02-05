@@ -19,7 +19,7 @@ public class ChildMove : MonoBehaviour {
 	
 	void Update () {
 
-		moveCon.GetTurn (_turnSpot, _direction);
+		//moveCon.GetTurn (_turnSpot, _direction);
 
 	}
 }
