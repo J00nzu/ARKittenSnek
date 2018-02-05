@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Housebreak : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void Update()
+    {
+        Animator anim = GetComponent<Animator>();
+
+        if (anim != null && Input.GetKeyDown(KeyCode.E))
+        {
+            anim.SetTrigger("break");
+        }
+        if (anim != null && Input.GetKeyDown(KeyCode.R))
+        {
+            anim.SetTrigger("reverse");
+        }
+    }
 }
