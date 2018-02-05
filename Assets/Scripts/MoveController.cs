@@ -4,120 +4,84 @@ using UnityEngine;
 
 public class MoveController : MonoBehaviour {
 
+	Vector2 tempDir = new Vector2(0, 1);
+
+	Vector3 targetPosition;
+	int targetX = 0, targetY = 0;
+	GridScript grid;
+
 	public float speed;
-	private Vector3 moveVec;
-	private Vector3 tempMove;
-
-	private Vector3 tempVec;
-	private Vector3 turnVec;
-	public string tempDir;
-	private string dir;
-	private bool canAdd;
-	private int childs;
-	private Vector3 birthPlace;
-
-
-	public float timer;
 	public GameObject catPrefab;
 
+	public Vector2 disabledDir;
+
 	void Start () {
+		grid = FindObjectOfType<GridScript>();
 
-		canAdd = false;
-		childs = 0;
-		dir = "right";
-		tempDir = dir;
+		StartCoroutine(Move());
+	}
 
+	IEnumerator Move () {
+		yield return null;
+		targetPosition = grid.getTarget(targetX, targetY);
+		transform.position = targetPosition;
+		while (true) {
+			while (Vector3.Distance(transform.position, targetPosition) > 0.01) {
+				transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed*Time.deltaTime);
+				yield return null;
+			}
+			targetX += (int)tempDir.x;
+			targetY += (int)tempDir.y;
+			if (targetX < 0 || targetX > 9 || targetY < 0 || targetY > 9) {
+				targetX = (int)Mathf.Clamp(targetX, 0, 9);
+				targetY = (int)Mathf.Clamp(targetY, 0, 9);
+
+				yield return null;
+				continue;
+			}
+			DoTurn(tempDir);
+			targetPosition = grid.getTarget(targetX, targetY);
+			disabledDir = -tempDir;
+		}
 	}
 	
 	void Update () {
-
-		timer -= Time.deltaTime;
-
-		switch (dir) {
-
-		case "right":
-			tempMove = Vector3.right / 30;
-			break;
-
-		case "left":
-			tempMove = Vector3.left / 30;
-			break;
-
-		case "up":
-			tempMove = Vector3.forward / 30;
-			break;
-
-		case "down":
-			tempMove = Vector3.back / 30;
-			break;
-
-		}
-
-		tempVec = transform.position;
-
-		if (timer <= 0) {
-			tempDir = dir;
-			moveVec = tempMove;
-			turnVec = transform.position;
-			if (canAdd == true) {
-				Prosper ();
-			}
-			timer = 0.5f;
-		}
-
-		transform.Translate (moveVec);
-
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			dir = "up";
+			if(!disabledDir.Equals(new Vector2(0, 1))) {
+				tempDir = new Vector2(0, 1);
+			}
 		}
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			dir = "down";
+			if (!disabledDir.Equals(new Vector2(0, -1))) {
+				tempDir = new Vector2(0, -1);
+			}
 		}
 		if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			dir = "right";
+			if (!disabledDir.Equals(new Vector2(1, 0))) {
+				tempDir = new Vector2(1, 0);
+			}
 		}
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			dir = "left";
+			if (!disabledDir.Equals(new Vector2(-1, 0))) {
+				tempDir = new Vector2(-1, 0);
+			}
 		}
 
 	}
 
-	public void GetTurn(Vector3 turn, string direction) {
-		turn = turnVec;
-		direction = tempDir;
+	public void DoTurn(Vector2 turn) {
+		Vector3 turn3 = new Vector3(turn.x, 0, turn.y);
+		transform.LookAt(transform.position+turn3);
 	}
 
 	void Prosper() {
-		childs++;
-		tempVec = transform.position;
-		switch (tempDir) {
-
-		case "right":
-			birthPlace = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
-			break;
-
-		case "left":
-			birthPlace = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-			break;
-
-		case "up":
-			birthPlace = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
-			break;
-
-		case "down":
-			birthPlace = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
-			break;
-
-		}
-	
-		GameObject clone = Instantiate (catPrefab, birthPlace, Quaternion.identity);
-		canAdd = false;
+		
 	}
 
 	void OnTriggerEnter(Collider coll) {
 		if (coll.gameObject.tag == "Food") {
 			Destroy (coll.gameObject);
-			canAdd = true;
+			//canAdd = true;
 		}
 	}
 
