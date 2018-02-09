@@ -15,29 +15,19 @@ public class GameStarter : MonoBehaviour, ITrackableEventHandler {
 		mTrackableBehaviour = GetComponent<TrackableBehaviour>();
 		if (mTrackableBehaviour)
 			mTrackableBehaviour.RegisterTrackableEventHandler(this);
-
-		Time.timeScale = 0.001f;
-		foreach (var item in startWhenFound) {
-			item.SetActive(false);
-		}
 	}
 
-	IEnumerator StartThing () {
-		while (Time.timeScale != 1) {
-			Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1, (0.3f * Time.unscaledDeltaTime));
-			yield return null;
-		}
+
+	public void StartTheGame () {
+		FindObjectOfType<MoveController>().StartMoving();
 	}
 
 	public void OnTrackableStateChanged (TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus) {
 		if (newStatus == TrackableBehaviour.Status.TRACKED) {
 			kittenPresent = true;
 			Debug.Log("kitten acquired!");
-
-			StartCoroutine(StartThing());
-			foreach (var item in startWhenFound) {
-				item.SetActive(true);
-			}
+			Time.timeScale = 1;
+			
 		} else if (newStatus == TrackableBehaviour.Status.NOT_FOUND) {
 			kittenPresent = false;
 			Time.timeScale = 0.001f;

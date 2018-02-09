@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MoveController : MonoBehaviour {
 
+	Animator anim;
 	ChildMove child;
 
 	Vector2 tempDir = new Vector2(0, 1);
@@ -32,9 +33,15 @@ public class MoveController : MonoBehaviour {
 	private bool rightClicked;
 	private bool leftClicked;
 
+	private float o_speed;
+
 	void Start () {
 		grid = FindObjectOfType<GridScript>();
 
+		anim = GetComponent<Animator>();
+
+		o_speed = speed;
+		speed = 0;
 
 		upClicked = false;
 		downClicked = false;
@@ -57,8 +64,11 @@ public class MoveController : MonoBehaviour {
 	}
 
 	IEnumerator Move () {
-		yield return null;
+		yield return new WaitForSeconds(0.1f);
+		Debug.Log(targetX + " " + targetY);
 		targetPosition = grid.getTarget(targetX, targetY);
+		Debug.Log(targetPosition);
+
 		transform.position = targetPosition;
 		while (true) {
 			while (Vector3.Distance(transform.position, targetPosition) > 0.01) {
@@ -113,6 +123,20 @@ public class MoveController : MonoBehaviour {
 
 	}
 
+	IEnumerator Accelerate () {
+		while (speed != o_speed) {
+			speed = Mathf.MoveTowards(speed, o_speed, Time.deltaTime*0.1f);
+			anim.SetFloat("walkspeed", speed / o_speed);
+
+			yield return null;
+		}
+	}
+
+	public void StartMoving () {
+		StartCoroutine(Accelerate());
+		Debug.Log("movecon");
+	}
+
 	public void DoTurn(Vector2 turn) {
 		Vector3 turn3 = new Vector3(turn.x, 0, turn.y);
 		transform.LookAt(transform.position+turn3);
@@ -120,12 +144,7 @@ public class MoveController : MonoBehaviour {
 
 	public void Die () {
 		targetPosition = new Vector3(0, 1000, 0);
-		StartCoroutine(restart());
-	}
-
-	public IEnumerator restart () {
-		yield return new WaitForSeconds(3f);
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		StartCoroutine(FindObjectOfType<HouseScript>().EndAnim());
 	}
 
 	void Prosper() {

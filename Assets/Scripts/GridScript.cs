@@ -8,14 +8,20 @@ public class GridScript : MonoBehaviour {
 
 	public Vector3[,] grid;
 
+	public Vector3 positBot;
+	public Vector3 positTop;
+
 	// Use this for initialization
 	void Start () {
 		Transform bottomLeft = GameObject.Find("BottomLeft").transform;
 		Transform topRight = GameObject.Find("TopRight").transform;
 
-		float bottom = bottomLeft.position.z;
+		positBot = bottomLeft.position;
+		positTop = topRight.position;
+		
+		float bottom = topRight.position.z;
 		float left = bottomLeft.position.x;
-		float top = topRight.position.z;
+		float top = bottomLeft.position.z;
 		float right = topRight.position.x;
 
 		float height = top - bottom;
@@ -34,12 +40,17 @@ public class GridScript : MonoBehaviour {
 				float y = bottom + yy * height;
 
 				Vector3 pos = new Vector3(x, zz, y);
+				Debug.Log("i: " + i + "j: " + j + "x: " + xx + " y: " + yy + " pos: " + pos);
 				grid[i, j] = pos;
 			}
 		}
 	}
 
+	public void Update () {
+	}
+
 	public Vector3 getTarget (int x, int y) {
+		Debug.Log(grid[x, y]);
 		return grid[x, y];
 	}
 
