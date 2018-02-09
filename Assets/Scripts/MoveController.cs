@@ -144,8 +144,10 @@ public class MoveController : MonoBehaviour {
 	void OnTriggerEnter(Collider coll) {
 		if (coll.gameObject.tag == "Food") {
 			var food = coll.GetComponent<FoodScript>();
+			var gc = GetComponent<GameController>();
 			food.RePosition();
 			Prosper();
+			gc.ScoreCounter;
 		}
 	}
 

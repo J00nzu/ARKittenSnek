@@ -6,6 +6,7 @@ public class FoodScript : MonoBehaviour {
 
 	GridScript grid;
 
+
 	// Use this for initialization
 	void Start () {
 		grid = FindObjectOfType<GridScript>();
@@ -23,4 +24,5 @@ public class FoodScript : MonoBehaviour {
 		Vector3 pos = grid.getTarget(x, y);
 		transform.position = pos;
 	}
+		
 }
