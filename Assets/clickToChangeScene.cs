@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class clickToChangeScene : MonoBehaviour {
 
+	void Start () {
+		Time.timeScale = 1;
+	}
+
     void OnMouseDown ()
     {
         SceneManager.LoadScene("gameScene");

@@ -18,6 +18,14 @@ public class ChildMove : MonoBehaviour {
 		StartCoroutine(Move());
 	}
 
+	void OnTriggerEnter (Collider coll) {
+		if (coll.gameObject.tag == "Player") {
+			var player = coll.GetComponent<MoveController>();
+			if(player != null)
+				player.Die();
+		}
+	}
+
 	IEnumerator Move () {
 		yield return null;
 		

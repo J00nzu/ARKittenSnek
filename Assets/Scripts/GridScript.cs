@@ -40,7 +40,6 @@ public class GridScript : MonoBehaviour {
 				float y = bottom + yy * height;
 
 				Vector3 pos = new Vector3(x, zz, y);
-				Debug.Log("i: " + i + "j: " + j + "x: " + xx + " y: " + yy + " pos: " + pos);
 				grid[i, j] = pos;
 			}
 		}
@@ -50,7 +49,6 @@ public class GridScript : MonoBehaviour {
 	}
 
 	public Vector3 getTarget (int x, int y) {
-		Debug.Log(grid[x, y]);
 		return grid[x, y];
 	}
 

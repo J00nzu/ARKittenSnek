@@ -308,6 +308,7 @@ GameObject:
   - component: {fileID: 4720436291357818}
   - component: {fileID: 95643844816250674}
   - component: {fileID: 114738613750330374}
+  - component: {fileID: 65844915945178292}
   m_Layer: 0
   m_Name: KittenBody
   m_TagString: Player
@@ -1845,6 +1846,18 @@ Transform:
   m_Father: {fileID: 4736504276025872}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65844915945178292
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1254810790543370}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!95 &95643844816250674
 Animator:
   serializedVersion: 3

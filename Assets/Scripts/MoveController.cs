@@ -15,7 +15,7 @@ public class MoveController : MonoBehaviour {
 
 	Vector3 targetPosition;
 	Vector3 lastTarget;
-	int targetX = 0, targetY = 0;
+	int targetX = 1, targetY = 1;
 	GridScript grid;
 
 	public float speed;
@@ -62,6 +62,11 @@ public class MoveController : MonoBehaviour {
 
 		Button buttonLeft = leftBut.GetComponent<Button>();
 		buttonLeft.onClick.AddListener(LeftOnClick);
+
+		buttonUp.gameObject.SetActive(false);
+		buttonDown.gameObject.SetActive(false);
+		buttonRight.gameObject.SetActive(false);
+		buttonLeft.gameObject.SetActive(false);
 
 		StartCoroutine(Move());
 	}
@@ -137,20 +142,32 @@ public class MoveController : MonoBehaviour {
 
 	public void StartMoving () {
 		StartCoroutine(Accelerate());
-		Debug.Log("movecon");
+		upBut.gameObject.SetActive(true);
+		downBut.gameObject.SetActive(true);
+		rightBut.gameObject.SetActive(true);
+		leftBut.gameObject.SetActive(true);
 	}
 
 	public void DoTurn(Vector2 turn) {
 		Vector3 turn3 = new Vector3(turn.x, 0, turn.y);
 		transform.LookAt(transform.position+turn3);
 	}
-
+	bool dead = false;
 	public void Die () {
-		targetPosition = new Vector3(0, 1000, 0);
-		StartCoroutine(FindObjectOfType<HouseScript>().EndAnim());
+		if (!dead) { 
+			targetPosition = new Vector3(0, 1000, 0);
+			StartCoroutine(FindObjectOfType<HouseScript>().EndAnim());
+			upBut.gameObject.SetActive(false);
+			downBut.gameObject.SetActive(false);
+			leftBut.gameObject.SetActive(false);
+			rightBut.gameObject.SetActive(false);
+			AudioManager.singleton.PlayDie();
+			dead = true;
+		}
 	}
 
 	void Prosper() {
+		AudioManager.singleton.PlayEat();
 		if (child != null) {
 			child.SpawnFollower(catPrefab, grid.getCellLength());
 		} else { 

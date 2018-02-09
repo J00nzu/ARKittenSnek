@@ -21,11 +21,12 @@ public class HouseScript : MonoBehaviour {
 	}
 
 	void OnMouseDown () {
-		Debug.Log("Meow!");
 		if (!hasStarted) {
 			hasStarted = true;
 			anim.SetTrigger("break");
 			StartCoroutine(WaitAnim());
+			AudioManager.singleton.PlayCola();
+			AudioManager.singleton.PlayGame();
 		}
 	}
 
@@ -35,9 +36,12 @@ public class HouseScript : MonoBehaviour {
 	}
 
 	public IEnumerator EndAnim () {
+		FindObjectOfType<GameController>().deathCat();
 		yield return new WaitForSeconds(2);
 		anim.SetTrigger("reverse");
 		yield return new WaitForSeconds(3);
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		AudioManager.singleton.PlayMenu();
+		Time.timeScale = 1;
+		SceneManager.LoadScene(0);
 	}
 }
