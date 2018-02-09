@@ -46,4 +46,8 @@ public class GridScript : MonoBehaviour {
 	public int getGridSize () {
 		return gridSize;
 	}
+
+	public float getCellLength () {
+		return Mathf.Abs(grid[0, 0].x - grid[1, 0].x);
+	}
 }

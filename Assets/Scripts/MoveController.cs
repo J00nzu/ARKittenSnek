@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MoveController : MonoBehaviour {
 
+	ChildMove child;
+
 	Vector2 tempDir = new Vector2(0, 1);
+	Vector2 lastDir;
 
 	Vector3 targetPosition;
+	Vector3 lastTarget;
 	int targetX = 0, targetY = 0;
 	GridScript grid;
 
@@ -15,8 +21,37 @@ public class MoveController : MonoBehaviour {
 
 	public Vector2 disabledDir;
 
+
+	public Button upBut;
+	public Button downBut;
+	public Button rightBut;
+	public Button leftBut;
+
+	private bool upClicked;
+	private bool downClicked;
+	private bool rightClicked;
+	private bool leftClicked;
+
 	void Start () {
 		grid = FindObjectOfType<GridScript>();
+
+
+		upClicked = false;
+		downClicked = false;
+		rightClicked = false;
+		leftClicked = false;
+
+		Button buttonUp = upBut.GetComponent<Button>();
+		buttonUp.onClick.AddListener(UpOnClick);
+
+		Button buttonDown = downBut.GetComponent<Button>();
+		buttonDown.onClick.AddListener(DownOnClick);
+
+		Button buttonRight = rightBut.GetComponent<Button>();
+		buttonRight.onClick.AddListener(RightOnClick);
+
+		Button buttonLeft = leftBut.GetComponent<Button>();
+		buttonLeft.onClick.AddListener(LeftOnClick);
 
 		StartCoroutine(Move());
 	}
@@ -39,31 +74,40 @@ public class MoveController : MonoBehaviour {
 				yield return null;
 				continue;
 			}
+			if (child != null) {
+				child.nextTarget(lastTarget, lastDir);
+			}
 			DoTurn(tempDir);
+			lastTarget = targetPosition;
 			targetPosition = grid.getTarget(targetX, targetY);
 			disabledDir = -tempDir;
+			lastDir = tempDir;
 		}
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+		if (Input.GetKeyDown (KeyCode.UpArrow) || upClicked) {
 			if(!disabledDir.Equals(new Vector2(0, 1))) {
 				tempDir = new Vector2(0, 1);
+				upClicked = false;
 			}
 		}
-		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+		if (Input.GetKeyDown (KeyCode.DownArrow) || downClicked) {
 			if (!disabledDir.Equals(new Vector2(0, -1))) {
 				tempDir = new Vector2(0, -1);
+				downClicked = false;
 			}
 		}
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+		if (Input.GetKeyDown (KeyCode.RightArrow) || rightClicked) {
 			if (!disabledDir.Equals(new Vector2(1, 0))) {
 				tempDir = new Vector2(1, 0);
+				rightClicked = false;
 			}
 		}
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+		if (Input.GetKeyDown (KeyCode.LeftArrow) || leftClicked) {
 			if (!disabledDir.Equals(new Vector2(-1, 0))) {
 				tempDir = new Vector2(-1, 0);
+				leftClicked = false;
 			}
 		}
 
@@ -74,8 +118,27 @@ public class MoveController : MonoBehaviour {
 		transform.LookAt(transform.position+turn3);
 	}
 
+	public void Die () {
+		targetPosition = new Vector3(0, 1000, 0);
+		StartCoroutine(restart());
+	}
+
+	public IEnumerator restart () {
+		yield return new WaitForSeconds(3f);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
 	void Prosper() {
-		
+		if (child != null) {
+			child.SpawnFollower(catPrefab, grid.getCellLength());
+		} else { 
+			GameObject c = Instantiate(catPrefab, transform.parent);
+			Vector3 disDir3D = new Vector3(disabledDir.x, 0, disabledDir.y);
+			c.transform.position = transform.position + (disDir3D * grid.getCellLength());
+			child = c.GetComponent<ChildMove>();
+			child.nextTarget(lastTarget, lastDir);
+			child.speed = speed;
+		}
 	}
 
 	void OnTriggerEnter(Collider coll) {
@@ -84,6 +147,32 @@ public class MoveController : MonoBehaviour {
 			food.RePosition();
 			Prosper();
 		}
+	}
+
+
+	void UpOnClick () {
+		upClicked = true;
+		downClicked = false;
+		rightClicked = false;
+		leftClicked = false;
+	}
+	void DownOnClick () {
+		upClicked = false;
+		downClicked = true;
+		rightClicked = false;
+		leftClicked = false;
+	}
+	void RightOnClick () {
+		upClicked = false;
+		downClicked = false;
+		rightClicked = true;
+		leftClicked = false;
+	}
+	void LeftOnClick () {
+		upClicked = false;
+		downClicked = false;
+		rightClicked = false;
+		leftClicked = true;
 	}
 
 }
