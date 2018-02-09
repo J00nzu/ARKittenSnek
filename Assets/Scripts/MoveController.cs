@@ -37,8 +37,10 @@ public class MoveController : MonoBehaviour {
 
 	void Start () {
 		grid = FindObjectOfType<GridScript>();
+		gc = GameObject.Find ("GameController").GetComponent<GameController>();
 
 		anim = GetComponent<Animator>();
+		gc = GameObject.Find ("GameController").GetComponent<GameController>();
 
 		o_speed = speed;
 		speed = 0;
@@ -165,6 +167,7 @@ public class MoveController : MonoBehaviour {
 			var food = coll.GetComponent<FoodScript>();
 			food.RePosition();
 			Prosper();
+			gc.ScoreCounter();
 		}
 	}
 

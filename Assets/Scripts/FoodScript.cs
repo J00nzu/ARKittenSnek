@@ -5,7 +5,7 @@ using UnityEngine;
 public class FoodScript : MonoBehaviour {
 
 	GridScript grid;
-	int foodCount;
+
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +23,6 @@ public class FoodScript : MonoBehaviour {
 		int y = Random.Range(0, grid.getGridSize());
 		Vector3 pos = grid.getTarget(x, y);
 		transform.position = pos;
-		foodCount++;
 	}
 		
 }
