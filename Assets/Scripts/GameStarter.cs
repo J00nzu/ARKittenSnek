@@ -22,12 +22,19 @@ public class GameStarter : MonoBehaviour, ITrackableEventHandler {
 		}
 	}
 
+	IEnumerator StartThing () {
+		while (Time.timeScale != 1) {
+			Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1, (0.3f * Time.unscaledDeltaTime));
+			yield return null;
+		}
+	}
+
 	public void OnTrackableStateChanged (TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus) {
 		if (newStatus == TrackableBehaviour.Status.TRACKED) {
 			kittenPresent = true;
 			Debug.Log("kitten acquired!");
 
-			Time.timeScale = 1f;
+			StartCoroutine(StartThing());
 			foreach (var item in startWhenFound) {
 				item.SetActive(true);
 			}
