@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MoveController : MonoBehaviour {
 
+	GameController gc;
 	Animator anim;
 	ChildMove child;
 
