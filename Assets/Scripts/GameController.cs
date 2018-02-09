@@ -21,8 +21,9 @@ public class GameController : MonoBehaviour {
 		number3 = GameObject.Find ("Number3").GetComponent<RawImage> ();
 
 
-		//number1.gameObject.SetActive (false);
-		//number2.gameObject.SetActive (false);
+		number1.gameObject.SetActive (false);
+		number2.gameObject.SetActive (false);
+		number3.gameObject.SetActive (false);
 
 
 	}
@@ -62,6 +63,10 @@ public class GameController : MonoBehaviour {
 		number1.texture = (Texture)Resources.Load(thingy.ToString());
 		number2.texture = (Texture)Resources.Load(thingy2.ToString());
 		number3.texture = (Texture)Resources.Load(thingy3.ToString());
+
+		number1.gameObject.SetActive (true);
+		number2.gameObject.SetActive (true);
+		number3.gameObject.SetActive (true);
 
 	}
 }
