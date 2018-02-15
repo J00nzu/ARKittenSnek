@@ -15,10 +15,12 @@ public class GameStarter : MonoBehaviour, ITrackableEventHandler {
 		mTrackableBehaviour = GetComponent<TrackableBehaviour>();
 		if (mTrackableBehaviour)
 			mTrackableBehaviour.RegisterTrackableEventHandler(this);
+
 	}
 
 
 	public void StartTheGame () {
+
 		FindObjectOfType<MoveController>().StartMoving();
 	}
 
@@ -26,11 +28,9 @@ public class GameStarter : MonoBehaviour, ITrackableEventHandler {
 		if (newStatus == TrackableBehaviour.Status.TRACKED) {
 			kittenPresent = true;
 			Debug.Log("kitten acquired!");
-			Time.timeScale = 1;
 			
 		} else if (newStatus == TrackableBehaviour.Status.NOT_FOUND) {
 			kittenPresent = false;
-			Time.timeScale = 0.001f;
 		}
 	}
 

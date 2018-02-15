@@ -32,6 +32,7 @@ public class HouseScript : MonoBehaviour {
 
 	IEnumerator WaitAnim (){
 		yield return new WaitForSeconds(2);
+		
 		FindObjectOfType<GameStarter>().StartTheGame();
 	}
 

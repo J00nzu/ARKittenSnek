@@ -826,6 +826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1234baf610fcdd64dbb81d85b94e173d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botLeft: {fileID: 0}
+  topRi: {fileID: 0}
   gridSize: 30
   positBot: {x: 0, y: 0, z: 0}
   positTop: {x: 0, y: 0, z: 0}
@@ -1770,7 +1772,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1148061145
 Transform:
   m_ObjectHideFlags: 0
@@ -2012,7 +2014,7 @@ MonoBehaviour:
   m_Script: {fileID: -1826476478, guid: bab6fa851cf5a1a4bba3cec5f191cb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mWorldCenterMode: 3
+  mWorldCenterMode: 0
   mWorldCenter: {fileID: 190661495}
 --- !u!81 &1625195391
 AudioListener:
@@ -2365,6 +2367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1234baf610fcdd64dbb81d85b94e173d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botLeft: {fileID: 1148061144}
+  topRi: {fileID: 1526464802}
   gridSize: 30
   positBot: {x: 0, y: 0, z: 0}
   positTop: {x: 0, y: 0, z: 0}

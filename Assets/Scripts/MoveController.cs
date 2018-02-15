@@ -37,7 +37,6 @@ public class MoveController : MonoBehaviour {
 	private float o_speed;
 
 	void Start () {
-		grid = FindObjectOfType<GridScript>();
 		gc = GameObject.Find ("GameController").GetComponent<GameController>();
 
 		anim = GetComponent<Animator>();
@@ -68,11 +67,10 @@ public class MoveController : MonoBehaviour {
 		buttonRight.gameObject.SetActive(false);
 		buttonLeft.gameObject.SetActive(false);
 
-		StartCoroutine(Move());
 	}
 
 	IEnumerator Move () {
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForEndOfFrame();
 		Debug.Log(targetX + " " + targetY);
 		targetPosition = grid.getTarget(targetX, targetY);
 		Debug.Log(targetPosition);
@@ -141,7 +139,11 @@ public class MoveController : MonoBehaviour {
 	}
 
 	public void StartMoving () {
+		grid = FindObjectOfType<GridScript>();
+        grid.init();
+		StartCoroutine(Move());
 		StartCoroutine(Accelerate());
+
 		upBut.gameObject.SetActive(true);
 		downBut.gameObject.SetActive(true);
 		rightBut.gameObject.SetActive(true);
